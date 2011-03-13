@@ -53,7 +53,10 @@ public class InfosWord {
 	}
 
 	public int getOccurence(int documentId) {
-		return occurences.get(documentId);
+		if(occurences.containsKey(documentId))
+			return occurences.get(documentId);
+		else
+			return 0;
 	}
 
 	public String getWord() {
