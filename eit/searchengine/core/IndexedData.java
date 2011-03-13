@@ -117,5 +117,13 @@ public class IndexedData implements Serializable {
 	}
 
 	public void calculPoid() {
+		int nbDocs = documents.size();
+		for(String word : words.keySet()) {
+			InfosWord infos = words.get(word);
+			for(int docId : documents.keySet()) {
+				double poids = infos.getOccurence(docId) * Math.log(nbDocs / infos.getNbDocsOccurences());
+				infos.setPoids(docId, poids);
+			}
+		}
 	}
 }
