@@ -18,10 +18,14 @@ public class IndexedData implements Serializable {
 	private HashMap<String, InfosWord> words;
 	private HashMap<Integer, InfosDocument> documents;
 
+	//hash temporaire pour le remplissage, inutile sinon 
+	private HashMap <String,Integer> tmpHash;
+	
 	private IndexedData() {
 		// Divers champs ... a voir ce qu'on stoke (occurences, lemmes, etc ...)
 		words = new HashMap<String, InfosWord>();
 		documents = new HashMap<Integer, InfosDocument>();
+		tmpHash = new HashMap<String,Integer>();
 	}
 
 	private void addDocument(InfosDocument doc) {
@@ -64,9 +68,9 @@ public class IndexedData implements Serializable {
 
 	static IndexedData indexData(File pathToCorpusFile) {
 		IndexedData data = new IndexedData();
-
-		//TODO indexationnnnnnnnnnnn
 		data.initData(pathToCorpusFile);
+		//TODO indexationnnnnnnnnnnn
+		
 		
 
 		return data;
@@ -85,23 +89,51 @@ public class IndexedData implements Serializable {
 				MainWindow.getInstance().getRobotPanel().log("Enter '' directory");
 				analyzeDir(f);
 			} else {
+				//On vide la hashmap temporaire
+				this.tmpHash.clear();
+				
+				//Ouverture du fichier
 				if (f.getName().endsWith("lemmas.txt")) {
 					MainWindow.getInstance().getRobotPanel().log("Analyse "+f.getName());
 					InfosDocument docInfos = new InfosDocument();
 					try {
 						BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
 						String line;
+						
+						//Lecture ligne par ligne
 						while ((line = br.readLine()) != null) {
 							StringTokenizer st = new StringTokenizer(line);
+							
+							//Decoupage de la ligne en tokens
 							while (st.hasMoreTokens()) {
 								String word = st.nextToken();
 								InfosWord wdInfos;
+								
+								//Soit le mot est deja dans la hashmap
 								if(this.words.containsKey(word))
 									wdInfos = words.get(word);
-								else {
+								else { //Soit il n'y ait pas et on l'ajoute
+									
 									wdInfos = new InfosWord(word);
 									this.addNewWord(wdInfos);
 								}
+								
+								//permet d'avoir tous les mots différent du texte courant
+								//afin d'increment le nombre de texte auquel appartient le mot
+								//Si le mot n'est pas encore dans le texte courant ,
+								//on incremente nbDocOccurence du mot
+								if ( !this.tmpHash.containsKey(word)){
+									this.tmpHash.put(word, 1);
+									
+									//et hop on ajoute 1
+									words.get(word).setNbDocsOccurences(words.get(word).getNbDocsOccurences()+1);
+								}
+								else{//si le mot est deja passé, on le compte pas
+									
+								}
+									
+								
+								
 								wdInfos.addOccurence(1, docInfos.getId());
 							}
 						}
