@@ -34,6 +34,10 @@ public class MainWindow extends JFrame {
 		return searchPanel;
 	}
 
+	public RobotPanel getRobotPanel() {
+		return robotPanel;
+	}
+
 	public void init() {
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

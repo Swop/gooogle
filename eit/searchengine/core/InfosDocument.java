@@ -11,7 +11,7 @@ package eit.searchengine.core;
  */
 
 public class InfosDocument {
-	static int _cptInstances = 0;
+	private static int _cptInstances = 0;
 	private int id;
 	
 	// Je sais pas trop ce qu'il faut mettre ici .. Nombre de mots dans le doc ?
@@ -21,8 +21,8 @@ public class InfosDocument {
 		return _cptInstances;
 	}
 
-	public InfosDocument(int id) {
-		this.id =  id;
+	public InfosDocument() {
+		this.id =  getNewId();
 	}
 
 	public int getId() {
