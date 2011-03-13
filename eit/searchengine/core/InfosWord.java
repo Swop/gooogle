@@ -12,12 +12,22 @@ import java.util.HashMap;
  * @author swop
  */
 public class InfosWord {
+	private int nbDocsOccurences;
 	private String word;
 	private HashMap<Integer, Integer> occurences;
 
 	public InfosWord(String word) {
 		this.word = word;
 		occurences = new HashMap<Integer, Integer>();
+		nbDocsOccurences = 0;
+	}
+
+	public int getNbDocsOccurences() {
+		return nbDocsOccurences;
+	}
+
+	public void setNbDocsOccurences(int nbDocsOccurences) {
+		this.nbDocsOccurences = nbDocsOccurences;
 	}
 
 	public void setOccurence(int occurence, int documentId) {
