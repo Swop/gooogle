@@ -13,19 +13,27 @@ import java.util.HashMap;
  */
 public class InfosWord {
 	private String word;
-	private HashMap<Integer, Double> weights;
+	private HashMap<Integer, Integer> occurences;
 
 	public InfosWord(String word) {
 		this.word = word;
-		weights = new HashMap<Integer, Double>();
+		occurences = new HashMap<Integer, Integer>();
 	}
 
-	public void setWeight(double weight, int documentId) {
-		weights.put(documentId, weight);
+	public void setOccurence(int occurence, int documentId) {
+		occurences.put(documentId, occurence);
+	}
+	
+	public void addOccurence(int occurence, int documentId) {
+		if(occurences.containsKey(documentId)) {
+			occurences.put(documentId, occurence + occurences.get(documentId));
+		} else {
+			occurences.put(documentId, occurence);
+		}
 	}
 
-	public double getWeight(int documentId) {
-		return weights.get(documentId);
+	public int getOccurence(int documentId) {
+		return occurences.get(documentId);
 	}
 
 	public String getWord() {
