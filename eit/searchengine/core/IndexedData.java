@@ -4,6 +4,7 @@ import eit.searchengine.view.MainWindow;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class IndexedData implements Serializable {
@@ -11,8 +12,21 @@ public class IndexedData implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	//TODO Stocker toutes les infos de l'indexation ici
+	private HashMap words;
+	private HashMap documents;
+
 	private IndexedData() {
 		// Divers champs ... a voir ce qu'on stoke (occurences, lemmes, etc ...)
+		words = new HashMap();
+		documents = new HashMap();
+	}
+
+	private void addDocument(InfosDocument doc) {
+		documents.put(doc.getId(), doc);
+	}
+
+	private void addNewWord(InfosWord word) {
+		words.put(word.getWord(), word);
 	}
 
 	public void search(List<String> keywords) {
