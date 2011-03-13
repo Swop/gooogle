@@ -66,4 +66,12 @@ public class IndexedData implements Serializable {
 
 		return data;
 	}
+	
+	public void initData(File pathToCorpusFile) {
+		
+	}
+	
+	public void calculPoid() {
+		
+	}
 }
