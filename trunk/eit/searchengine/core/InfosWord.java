@@ -15,10 +15,12 @@ public class InfosWord {
 	private int nbDocsOccurences;
 	private String word;
 	private HashMap<Integer, Integer> occurences;
+	private HashMap<Integer, Double> poids;
 
 	public InfosWord(String word) {
 		this.word = word;
 		occurences = new HashMap<Integer, Integer>();
+		poids = new HashMap<Integer, Double>();
 		nbDocsOccurences = 0;
 	}
 
