@@ -1,5 +1,6 @@
 package eit.searchengine.core;
 
+import eit.searchengine.controller.Controller;
 import eit.searchengine.view.MainWindow;
 import java.io.BufferedReader;
 import java.io.File;
@@ -54,6 +55,13 @@ public class IndexedData implements Serializable {
 				List<Entry<Integer, Double>> scores = IndexedData.calculScore(me, keywords);
 				
 				for (final Entry<Integer, Double> entry : scores) {
+					int docId = entry.getKey();
+					double score = entry.getValue();
+					
+					InfosDocument infosDoc = me.documents.get(docId);
+					
+					//infosDoc.
+
 					Result res = new Result();
 					res.setTitle("Super titre");
 					res.setOriginAddress("http://www.google.com/article");
@@ -87,14 +95,21 @@ public class IndexedData implements Serializable {
 		t.start();
 	}
 
-	static IndexedData indexData(File pathToCorpusFile) {
-		IndexedData data = new IndexedData();
-		data.initData(pathToCorpusFile);
-		//TODO indexationnnnnnnnnnnn
+	public static void indexData(final File pathToCorpusFile) {
+		Thread t = new Thread() {
 
+			@Override
+			public void run() {
 
+				IndexedData data = new IndexedData();
+				data.initData(pathToCorpusFile);
+				//TODO indexationnnnnnnnnnnn
 
-		return data;
+				Controller.getInstance().getModel().finishedIndexing(data);
+				}
+		};
+
+		t.start();
 	}
 
 	public void initData(File pathToCorpusFile) {

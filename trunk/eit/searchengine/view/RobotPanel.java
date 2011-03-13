@@ -17,6 +17,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.filechooser.FileFilter;
 
@@ -61,9 +62,10 @@ public class RobotPanel extends Container implements ActionListener {
 		upPanel.add(_launchRobotButton);
 
 		_logViewer = new JTextArea();
+		JScrollPane scroll = new JScrollPane(_logViewer);
 
 		this.add(upPanel, BorderLayout.NORTH);
-		this.add(_logViewer, BorderLayout.CENTER);
+		this.add(scroll, BorderLayout.CENTER);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -125,5 +127,12 @@ public class RobotPanel extends Container implements ActionListener {
 
 	public void clearLog() {
 		_logViewer.setText("");
+	}
+
+	public void setLaunchButtonEnable(boolean state) {
+		if(!state)
+			_launchRobotButton.setEnabled(false);
+		else
+			_launchRobotButton.setEnabled(true);
 	}
 }
