@@ -5,6 +5,11 @@
 
 package eit.searchengine.core;
 
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 /**
  *
  * @author swop
@@ -13,6 +18,10 @@ package eit.searchengine.core;
 public class InfosDocument {
 	private static int _cptInstances = 0;
 	private int id;
+	private String url;
+	
+	private ArrayList<String> liensVersAutresDocs;
+	private ArrayList<String> liensPointantVersCeDoc;
 	
 	// Je sais pas trop ce qu'il faut mettre ici .. Nombre de mots dans le doc ?
 
@@ -22,11 +31,21 @@ public class InfosDocument {
 	}
 
 	public InfosDocument() {
+		this.liensVersAutresDocs = new ArrayList<String>();
+		this.liensPointantVersCeDoc = new ArrayList<String>();
 		this.id =  getNewId();
 	}
 
+	//public void addLienVersAutreDoc(String url);
 	public int getId() {
 		return id;
+	}
+	public void setUrl(String url){
+		this.url= url;
+	}
+	
+	public String getUrl(){
+		return url;
 	}
 	
 }
