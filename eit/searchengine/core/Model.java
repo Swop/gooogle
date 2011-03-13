@@ -1,5 +1,6 @@
 package eit.searchengine.core;
 
+import eit.searchengine.view.MainWindow;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -15,6 +16,7 @@ import java.util.logging.Logger;
 public class Model {
 
 	private IndexedData data = null;
+	private String outputFilePath;
 
 	public boolean closeModel() {
 		return true;
@@ -39,10 +41,17 @@ public class Model {
 		File outputFilePathFile = new File(outputFilePath);
 
 		checkPrivilege(pathToCorpusFile, outputFilePathFile);
+		MainWindow.getInstance().getRobotPanel().setLaunchButtonEnable(false);
+		MainWindow.getInstance().getRobotPanel().clearLog();
+		this.outputFilePath = outputFilePath;
 
-		data = IndexedData.indexData(pathToCorpusFile);
+		IndexedData.indexData(pathToCorpusFile);
+	}
 
-		saveIndexedData(outputFilePathFile);
+	public void finishedIndexing(IndexedData data) {
+		this.data = data;
+		saveIndexedData(new File(outputFilePath));
+		MainWindow.getInstance().getRobotPanel().setLaunchButtonEnable(true);
 	}
 
 	public void loadIndexedData(File pathToBinaryFile) throws IOException, DeserializationException {
