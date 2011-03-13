@@ -49,6 +49,7 @@ public class InfosWord {
 			occurences.put(documentId, occurence + occurences.get(documentId));
 		} else {
 			occurences.put(documentId, occurence);
+			++nbDocsOccurences;
 		}
 	}
 
