@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class IndexedData implements Serializable {
 
@@ -21,10 +23,15 @@ public class IndexedData implements Serializable {
 	private HashMap<String, InfosWord> words;
 	private HashMap<Integer, InfosDocument> documents;
 
+	//Associe un id de fichier a une url
+	private HashMap<String,Integer> url;
+	
+	
 	private IndexedData() {
 		// Divers champs ... a voir ce qu'on stoke (occurences, lemmes, etc ...)
 		words = new HashMap<String, InfosWord>();
 		documents = new HashMap<Integer, InfosDocument>();
+		url = new HashMap<String,Integer>();
 	}
 
 	private void addDocument(InfosDocument doc) {
@@ -105,7 +112,9 @@ public class IndexedData implements Serializable {
 			} else {
 				//Ouverture du fichier
 				if (f.getName().endsWith("lemmas.txt")) {
-					MainWindow.getInstance().getRobotPanel().log("Analyse " + f.getName());
+					
+					
+					MainWindow.getInstance().getRobotPanel().log("Analyse "+f.getName());
 					InfosDocument docInfos = new InfosDocument();
 					try {
 						BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
@@ -133,10 +142,40 @@ public class IndexedData implements Serializable {
 						}
 						br.close();
 						this.addDocument(docInfos);
+						
+						//********On ouvre le meme fichier mais html
+						String html = f.getAbsolutePath().replaceFirst("lemmes_seulement", "html");
+						html = html.replaceFirst("-lemmas.txt", ".html");
+						
+						File htmlFile = new File (html);
+						
+						try{
+							br = new BufferedReader(new InputStreamReader(new FileInputStream(htmlFile)));
+							line = "";
+							String urlTmp= "";
+							if((line = br.readLine()) != "") {						
+								urlTmp = line.replaceFirst("<base href=\"", "");
+								urlTmp = urlTmp.replaceFirst("\">", "");
+								//System.out.println(urlTmp);
+								
+								//On ajoute l'url au document courant
+								docInfos.setUrl(urlTmp);
+								this.url.put(urlTmp, docInfos.getId());
+							}
+							br.close();
+							
+						}
+						catch(Exception e){
+							System.out.println(e.toString());
+						}	
+						
+						
+						
 
 					} catch (Exception e) {
 						System.out.println(e.toString());
 					}
+					
 				}
 			}
 		}
