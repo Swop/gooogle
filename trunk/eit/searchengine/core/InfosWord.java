@@ -24,6 +24,14 @@ public class InfosWord {
 		nbDocsOccurences = 0;
 	}
 
+	public void setPoids(int DocId, double poids) {
+		this.poids.put(DocId, poids);
+	}
+
+	public double getPoids(int docId) {
+		return poids.get(docId);
+	}
+
 	public int getNbDocsOccurences() {
 		return nbDocsOccurences;
 	}
