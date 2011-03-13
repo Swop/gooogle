@@ -13,11 +13,11 @@ import java.util.HashMap;
  */
 public class InfosWord {
 	private String word;
-	private HashMap weights;
+	private HashMap<Integer, Double> weights;
 
 	public InfosWord(String word) {
 		this.word = word;
-		weights = new HashMap();
+		weights = new HashMap<Integer, Double>();
 	}
 
 	public void setWeight(double weight, int documentId) {
@@ -25,7 +25,7 @@ public class InfosWord {
 	}
 
 	public double getWeight(int documentId) {
-		return (Double)weights.get(documentId);
+		return weights.get(documentId);
 	}
 
 	public String getWord() {

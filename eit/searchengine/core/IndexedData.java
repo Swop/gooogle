@@ -12,13 +12,13 @@ public class IndexedData implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	//TODO Stocker toutes les infos de l'indexation ici
-	private HashMap words;
-	private HashMap documents;
+	private HashMap<String, InfosWord> words;
+	private HashMap<Integer, InfosDocument> documents;
 
 	private IndexedData() {
 		// Divers champs ... a voir ce qu'on stoke (occurences, lemmes, etc ...)
-		words = new HashMap();
-		documents = new HashMap();
+		words = new HashMap<String, InfosWord>();
+		documents = new HashMap<Integer, InfosDocument>();
 	}
 
 	private void addDocument(InfosDocument doc) {
