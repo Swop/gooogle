@@ -35,15 +35,17 @@ public class Model {
 		List<String> keywords = new ArrayList<String>();
 
 	
-		System.setProperty("treetagger.home", "./TreeTagger");
+		//System.setProperty("treetagger.home", "./TreeTagger");
 		// TODO : faire un test sur l'os
 //		tt.setModel("/french-par-linux-3.2-utf8.bin");
-		tt.setModel("/tag-french.bat");
+
+		/*tt.setModel("/tag-french.bat");
 		tt.setHandler(new TokenHandler<String>() {
 		    public void token(String token, String pos, String lemma) {
 		    	System.out.println(token+"\t"+pos+"\t"+lemma);
 			}
-		});
+		});*/
+
 /*		tt.setAdapter(new TokenAdapter<String>() {
 			public String getText(String e) {
 				return e;
@@ -53,7 +55,8 @@ public class Model {
 		while (st.hasMoreTokens()) {
 			keywords.add(st.nextToken());
 		}
-		tt.process(keywords);
+
+	//tt.process(keywords);
 		
 		// T0D0 : lecture de tt a passer a search
 		data.search(keywords);
@@ -72,7 +75,7 @@ public class Model {
 	}
 
 	public void finishedIndexing(IndexedData data) {
-		//this.data = data;
+		this.data = data;
 		MainWindow.getInstance().getRobotPanel().log("Save indexed data to file...");
 		saveIndexedData(new File(outputFilePath));
 		MainWindow.getInstance().getRobotPanel().log("Done!");
@@ -85,8 +88,11 @@ public class Model {
 			FileInputStream fis = new FileInputStream(pathToBinaryFile);
 			ObjectInputStream ois = new ObjectInputStream(fis);
 				data = (IndexedData) ois.readObject();
+
 				ois.close();
 				fis.close();
+				if(data == null)
+					throw new Exception();
 		/*} catch (IOException ioe) {
 			throw new IOException("Can't read selected file!");
 		*/} catch (Exception ex) {

@@ -7,7 +7,13 @@ import eit.searchengine.view.MainWindow;
 public class SearchEngine {
 
     public static void main(String[] args) {
-        Controller c = Controller.buildController(new Model());
+		if(args.length != 1) {
+			System.out.println("Usage : SearchEngine path_to_treetager_install_dir");
+			System.exit(1);
+		}
+        System.setProperty("treetagger.home", args[0]);
+
+		Controller c = Controller.buildController(new Model());
 
 		MainWindow w = MainWindow.getInstance();
 		w.init();
