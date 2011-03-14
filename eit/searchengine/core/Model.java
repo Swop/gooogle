@@ -28,7 +28,7 @@ public class Model {
 		return true;
 	}
 
-	public void search(String text) throws IndexedDataNotLoaded, IOException, TreeTaggerException {
+	public void search(String text, boolean ttActivated) throws IndexedDataNotLoaded, IOException, TreeTaggerException {
 		if (data == null) {
 			throw new IndexedDataNotLoaded();
 		}
@@ -39,12 +39,14 @@ public class Model {
 		// TODO : faire un test sur l'os
 //		tt.setModel("/french-par-linux-3.2-utf8.bin");
 
-		/*tt.setModel("/tag-french.bat");
-		tt.setHandler(new TokenHandler<String>() {
-		    public void token(String token, String pos, String lemma) {
-		    	System.out.println(token+"\t"+pos+"\t"+lemma);
-			}
-		});*/
+		if(ttActivated) {
+			tt.setModel("/tag-french.bat");
+			tt.setHandler(new TokenHandler<String>() {
+				public void token(String token, String pos, String lemma) {
+					System.out.println(token+"\t"+pos+"\t"+lemma);
+				}
+			});
+		}
 
 /*		tt.setAdapter(new TokenAdapter<String>() {
 			public String getText(String e) {
@@ -56,7 +58,8 @@ public class Model {
 			keywords.add(st.nextToken());
 		}
 
-	//tt.process(keywords);
+		if(ttActivated)
+			tt.process(keywords);
 		
 		// T0D0 : lecture de tt a passer a search
 		data.search(keywords);

@@ -16,6 +16,7 @@ import org.annolab.tt4j.TreeTaggerException;
 public class SearchPanel extends Container implements ActionListener, ListSelectionListener, KeyListener, ItemListener {
 
 	private boolean instantSearchActivated = true;
+	private boolean ttActivated = true;
 
 	private boolean enterKeyAllreadyPressed = false;
 
@@ -26,6 +27,7 @@ public class SearchPanel extends Container implements ActionListener, ListSelect
 	private JButton _chooseIndexedDataFileButton;
 	private JLabel _chooseIndexedDataFileLabel;
 	private JCheckBox _activateInstantSearchCheckbox;
+	private JCheckBox _activateTTCheckbox;
 	private JLabel _searchSpinner;
 
 	public SearchPanel() {
@@ -58,7 +60,9 @@ public class SearchPanel extends Container implements ActionListener, ListSelect
 		JPanel InstantSearchPanel = new JPanel(new BorderLayout());
 		_searchSpinner = new JLabel("");
 		InstantSearchPanel.add(_searchSpinner, BorderLayout.WEST);
-		InstantSearchPanel.add(new JLabel(""), BorderLayout.CENTER);
+		_activateTTCheckbox = new JCheckBox("Use tree-tagger", true);
+		_activateTTCheckbox.addItemListener(this);
+		InstantSearchPanel.add(_activateTTCheckbox, BorderLayout.CENTER);
 		_activateInstantSearchCheckbox = new JCheckBox("Instant Search", true);
 		_activateInstantSearchCheckbox.addItemListener(this);
 		InstantSearchPanel.add(_activateInstantSearchCheckbox, BorderLayout.EAST);
@@ -205,7 +209,7 @@ public class SearchPanel extends Container implements ActionListener, ListSelect
 		List<Result> lst;
 		this._searchSpinner.setText("Searching...");
 		try {
-			Controller.getInstance().getModel().search(_searchField.getText());
+			Controller.getInstance().getModel().search(_searchField.getText(), ttActivated);
 		} catch (IndexedDataNotLoaded ex) {
 			this._searchSpinner.setText("");
 			JOptionPane.showMessageDialog(MainWindow.getInstance(),
@@ -231,6 +235,8 @@ public class SearchPanel extends Container implements ActionListener, ListSelect
 		Object src = e.getItemSelectable();
 		if(src.equals(_activateInstantSearchCheckbox)) {
 			instantSearchActivated = _activateInstantSearchCheckbox.isSelected();
+		} else if(src.equals(_activateTTCheckbox)) {
+			ttActivated = _activateTTCheckbox.isSelected();
 		}
 	}
 
