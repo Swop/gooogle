@@ -16,14 +16,14 @@ public class ResultsListCellRenderer implements ListCellRenderer {
 	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 		Result result = (Result)value;
 		
-		JPanel pan = new JPanel(new GridLayout(3, 1));
+		JPanel pan = new JPanel(new GridLayout(2, 1));
 		pan.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
 		JLabel title = new JLabel("<html><font color=\"blue\">"+result.getTitle()+"</font></html>");
 		pan.add(title);
 
-		JLabel extract = new JLabel(result.getExtract());
-		pan.add(extract);
+		//JLabel extract = new JLabel(result.getExtract());
+		//pan.add(extract);
 
 		JLabel address = new JLabel("<html><font color=\"green\">"+result.getOriginAddress()+"</font></html>");
 		pan.add(address);

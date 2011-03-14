@@ -68,10 +68,10 @@ public class IndexedData implements Serializable {
 					//infosDoc.
 
 					Result res = new Result();
-					res.setTitle("Super titre");
-					res.setOriginAddress("http://www.google.com/article");
-					res.setLocalAddress("/Users/swop/Desktop/page.html");
-					res.setExtract("Voilà un super extrait du titre qui reflète bien la personnalité de notre auteur.zfzefzef ezf zff ezfze f zefzefzefz ezfze fezef");
+					res.setTitle(infosDoc.getTitle());
+					res.setOriginAddress(infosDoc.getUrl());
+					res.setLocalAddress(infosDoc.getUrlLocal());
+					res.setExtract("");
 					res.getKeywords().add("titre");
 
 					results.add(res);
@@ -142,7 +142,7 @@ public class IndexedData implements Serializable {
 
 					MainWindow.getInstance().getRobotPanel().log("Analyse "+f.getName());
 					String urlLocal = f.getAbsolutePath().replaceFirst("lemmes_seulement", "texte");
-					urlLocal = html.replaceFirst("-lemmas.txt", ".txt");
+					urlLocal = urlLocal.replaceFirst("-lemmas.txt", ".txt");
 					InfosDocument docInfos = new InfosDocument(urlLocal);
 					try {
 						
