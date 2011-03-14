@@ -29,7 +29,10 @@ public class InfosWord implements Serializable {
 		this.poids.put(DocId, poids);
 	}
 
-	public double getPoids(int docId) {
+	public float getPoids(int docId) {
+		Float p = poids.get(docId);
+		if(p == null)
+			return 0;
 		return poids.get(docId);
 	}
 
