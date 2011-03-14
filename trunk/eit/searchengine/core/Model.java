@@ -72,9 +72,11 @@ public class Model {
 	}
 
 	public void finishedIndexing(IndexedData data) {
-		this.data = data;
-		MainWindow.getInstance().getRobotPanel().setLaunchButtonEnable(true);
+		//this.data = data;
+		MainWindow.getInstance().getRobotPanel().log("Save indexed data to file...");
 		saveIndexedData(new File(outputFilePath));
+		MainWindow.getInstance().getRobotPanel().log("Done!");
+		MainWindow.getInstance().getRobotPanel().setLaunchButtonEnable(true);
 	}
 
 	public void loadIndexedData(File pathToBinaryFile) throws IOException, DeserializationException {
@@ -97,16 +99,10 @@ public class Model {
 		try {
 			FileOutputStream fos = new FileOutputStream(outputFilePathFile);
 			oos = new ObjectOutputStream(fos);
-			try {
-				oos.writeObject(data);
-				oos.flush();
-			} finally {
-				try {
-					oos.close();
-				} finally {
-					fos.close();
-				}
-			}
+			oos.writeObject(data);
+			oos.flush();
+			oos.close();
+			fos.close();
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}

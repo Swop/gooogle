@@ -55,12 +55,12 @@ public class IndexedData implements Serializable {
 				List<Entry<Integer, Float>> scores = IndexedData.calculScore(me, keywords);
 
 				float scoreMax = scores.get(0).getValue();
-				float seuil = scoreMax*6/10;
+				float seuil = scoreMax*3/10;
 				
 				for (final Entry<Integer, Float> entry : scores) {
 					int docId = entry.getKey();
 					float score = entry.getValue();
-					if(score < seuil)
+					if(score == 0 || score < seuil)
 						break;
 					
 					InfosDocument infosDoc = me.documents.get(docId);
