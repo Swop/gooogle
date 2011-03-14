@@ -123,6 +123,7 @@ public class RobotPanel extends Container implements ActionListener {
 
 	public void log(String txt) {
 		_logViewer.append("\n" + txt);
+		_logViewer.setCaretPosition(_logViewer.getDocument().getLength());
 	}
 
 	public void clearLog() {
