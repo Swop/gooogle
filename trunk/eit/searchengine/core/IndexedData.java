@@ -205,25 +205,30 @@ public class IndexedData implements Serializable {
 							int indexEnd = -1;
 							String url = "";
 							while((line = br.readLine()) !=  null){
+								indexEnd = -1;
 								while(indexEnd == -1) {
 									if(aSearch) {
-										indexStart = line.indexOf("<a");
+										indexStart = line.indexOf("<a", indexStart);
 										if(indexStart != -1) {
+											//System.out.println("found a "+cpt);
 											indexStart += 2;
 											hrefSearch = true;
 											aSearch = false;
 										} else {
 											indexEnd = 0;
+											indexStart = 0;
 										}
 									}
 									if(hrefSearch) {
 										indexStart = line.indexOf("href", indexStart);
 										if(indexStart != -1) {
+											//System.out.println("found href "+cpt);
 											indexStart += 4;
 											urlConcat = true;
 											hrefSearch = false;
 										} else {
 											indexEnd = 0;
+											indexStart = 0;
 										}
 									}
 									if(urlConcat) {
@@ -232,18 +237,20 @@ public class IndexedData implements Serializable {
 											if(indexStart != -1) {
 												indexEnd = line.indexOf("\"", indexStart+1);
 												if(indexEnd != -1) {
-													url = line.substring(indexStart, indexEnd);
+													url = line.substring(indexStart+1, indexEnd);
 													//ajouter l'url a la liste des sortants
 													docInfos.addLiensVersAutresDocs(url);
-													
+													//System.out.println("sans concat "+url);
 													url = "";
 													urlConcat = false;
 													toConcat = false;
 													aSearch = true;
+													indexStart = indexEnd + 1;
 													indexEnd = -1;
 												} else {
 													url = line.substring(indexStart+1);
 													toConcat = true;
+													indexEnd = 0;
 												}
 											}
 										} else {
@@ -252,11 +259,12 @@ public class IndexedData implements Serializable {
 												url += line.substring(0, indexEnd);
 												//ajouter l'url a la liste des sortants
 												docInfos.addLiensVersAutresDocs(url);
-												
+												//System.out.println("avec concat "+url);
 												url = "";
 												urlConcat = false;
 												toConcat = false;
 												aSearch = true;
+												indexStart = indexEnd + 1;
 												indexEnd = -1;
 											} else {
 												url += line;
