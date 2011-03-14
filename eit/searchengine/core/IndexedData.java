@@ -17,14 +17,6 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.htmlparser.NodeFilter;
-import org.htmlparser.Parser;
-import org.htmlparser.filters.LinkRegexFilter;
-import org.htmlparser.filters.LinkStringFilter;
-import org.htmlparser.tags.LinkTag;
-import org.htmlparser.util.NodeList;
-import org.htmlparser.util.ParserException;
-
 public class IndexedData implements Serializable {
 
 	private static final long serialVersionUID = 1L;
