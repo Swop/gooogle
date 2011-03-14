@@ -192,7 +192,74 @@ public class IndexedData implements Serializable {
 								docInfos.setUrl(urlTmp);
 								this.url.put(urlTmp, docInfos.getId());
 							}
+							boolean aSearch = true;
+							boolean hrefSearch = false;
+							boolean urlConcat = false;
+							boolean toConcat = false;
+							int indexStart = 0;
+							int indexEnd = -1;
+							String url = "";
 							while((line = br.readLine()) !=  null){
+								while(indexEnd == -1) {
+									if(aSearch) {
+										indexStart = line.indexOf("<a");
+										if(indexStart != -1) {
+											indexStart += 2;
+											hrefSearch = true;
+											aSearch = false;
+										} else {
+											indexEnd = 0;
+										}
+									}
+									if(hrefSearch) {
+										indexStart = line.indexOf("href", indexStart);
+										if(indexStart != -1) {
+											indexStart += 4;
+											urlConcat = true;
+											hrefSearch = false;
+										} else {
+											indexEnd = 0;
+										}
+									}
+									if(urlConcat) {
+										if(!toConcat) {
+											indexStart = line.indexOf("\"", indexStart);
+											if(indexStart != -1) {
+												indexEnd = line.indexOf("\"", indexStart+1);
+												if(indexEnd != -1) {
+													url = line.substring(indexStart, indexEnd);
+													//ajouter l'url a la liste des sortants
+													docInfos.addLiensVersAutresDocs(url);
+													
+													url = "";
+													urlConcat = false;
+													toConcat = false;
+													aSearch = true;
+													indexEnd = -1;
+												} else {
+													url = line.substring(indexStart+1);
+													toConcat = true;
+												}
+											}
+										} else {
+											indexEnd = line.indexOf("\"", 0);
+											if(indexEnd != -1) {
+												url += line.substring(0, indexEnd);
+												//ajouter l'url a la liste des sortants
+												docInfos.addLiensVersAutresDocs(url);
+												
+												url = "";
+												urlConcat = false;
+												toConcat = false;
+												aSearch = true;
+												indexEnd = -1;
+											} else {
+												url += line;
+											}
+										}
+									}
+								}
+								/*
 								Pattern p = Pattern.compile("(<a (href)*)"); 
 								Pattern p2 = Pattern.compile("href=\"(.*)\""); 
 								
@@ -200,6 +267,7 @@ public class IndexedData implements Serializable {
 							//	Matcher m2 = p2.matcher(m.group(0));
 								
 								System.out.println(m.group(0));
+								*/
 							}
 							
 							br.close();

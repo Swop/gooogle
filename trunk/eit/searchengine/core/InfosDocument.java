@@ -24,7 +24,10 @@ public class InfosDocument  implements Serializable {
 	private ArrayList<String> liensVersAutresDocs;
 	private ArrayList<String> liensPointantVersCeDoc;
 	
-	// Je sais pas trop ce qu'il faut mettre ici .. Nombre de mots dans le doc ?
+	
+	public void addLiensVersAutresDocs(String lien) {
+		liensVersAutresDocs.add(lien);
+	}
 
 	public static int getNewId() {
 		_cptInstances++;
