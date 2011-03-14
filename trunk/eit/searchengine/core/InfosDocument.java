@@ -20,10 +20,18 @@ public class InfosDocument  implements Serializable {
 	private static int _cptInstances = 0;
 	private int id;
 	private String url;
+	private String title;
 	
 	private ArrayList<String> liensVersAutresDocs;
 	private ArrayList<String> liensPointantVersCeDoc;
 	
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
+	public String getTitle() {
+		return title;
+	}
 	
 	public void addLiensVersAutresDocs(String lien) {
 		liensVersAutresDocs.add(lien);

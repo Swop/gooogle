@@ -177,8 +177,8 @@ public class IndexedData implements Serializable {
 						this.addDocument(docInfos);
 						
 						//********On ouvre le meme fichier mais html
-						String html = f.getAbsolutePath().replaceFirst("lemmes_seulement", "html");
-						html = html.replaceFirst("-lemmas.txt", ".html");
+						String html = f.getAbsolutePath().replaceFirst("lemmes_seulement", "texte");
+						html = html.replaceFirst("-lemmas.txt", ".txt");
 						
 						File htmlFile = new File (html);
 						
@@ -188,105 +188,28 @@ public class IndexedData implements Serializable {
 							 br = new BufferedReader(in);
 							line = "";
 							String urlTmp= "";
-							if((line = br.readLine()) != "") {						
-								urlTmp = line.replaceFirst("<base href=\"", "");
-								urlTmp = urlTmp.replaceFirst("\">", "");
-								//System.out.println(urlTmp);
+							if((line = br.readLine()) != "") {			
+								if(line.startsWith("URL=")) {
+									urlTmp = line.substring(4);
+								}
 								
 								//On ajoute l'url au document courant
 								docInfos.setUrl(urlTmp);
 								this.url.put(urlTmp, docInfos.getId());
 							}
-							/*boolean aSearch = true;
-							boolean hrefSearch = false;
-							boolean urlConcat = false;
-							boolean toConcat = false;
-							int indexStart = 0;
-							int indexEnd = -1;
-							String url = "";
-							while((line = br.readLine()) !=  null){
-								indexEnd = -1;
-								while(indexEnd == -1) {
-									if(aSearch) {
-										indexStart = line.indexOf("<a", indexStart);
-										if(indexStart != -1) {
-											//System.out.println("found a "+cpt);
-											indexStart += 2;
-											hrefSearch = true;
-											aSearch = false;
-										} else {
-											indexEnd = 0;
-											indexStart = 0;
-										}
-									}
-									if(hrefSearch) {
-										indexStart = line.indexOf("href", indexStart);
-										if(indexStart != -1) {
-											//System.out.println("found href "+cpt);
-											indexStart += 4;
-											urlConcat = true;
-											hrefSearch = false;
-										} else {
-											indexEnd = 0;
-											indexStart = 0;
-										}
-									}
-									if(urlConcat) {
-										if(!toConcat) {
-											indexStart = line.indexOf("\"", indexStart);
-											if(indexStart != -1) {
-												indexEnd = line.indexOf("\"", indexStart+1);
-												if(indexEnd != -1) {
-													url = line.substring(indexStart+1, indexEnd);
-													//ajouter l'url a la liste des sortants
-													docInfos.addLiensVersAutresDocs(url);
-													//System.out.println("sans concat "+url);
-													url = "";
-													urlConcat = false;
-													toConcat = false;
-													aSearch = true;
-													indexStart = indexEnd + 1;
-													indexEnd = -1;
-												} else {
-													url = line.substring(indexStart+1);
-													toConcat = true;
-													indexEnd = 0;
-												}
-											}
-										} else {
-											indexEnd = line.indexOf("\"", 0);
-											if(indexEnd != -1) {
-												url += line.substring(0, indexEnd);
-												//ajouter l'url a la liste des sortants
-												docInfos.addLiensVersAutresDocs(url);
-												//System.out.println("avec concat "+url);
-												url = "";
-												urlConcat = false;
-												toConcat = false;
-												aSearch = true;
-												indexStart = indexEnd + 1;
-												indexEnd = -1;
-											} else {
-												url += line;
-											}
-										}
-									}
+							if((line = br.readLine()) != "") {			
+								if(line.startsWith("TITLE=")) {
+									urlTmp = line.substring(6);
 								}
-								/*
-								Pattern p = Pattern.compile("(<a (href)*)"); 
-								Pattern p2 = Pattern.compile("href=\"(.*)\""); 
 								
-								Matcher m = p.matcher(line); 
-							//	Matcher m2 = p2.matcher(m.group(0));
-								
-								System.out.println(m.group(0));
-								*/
-							/*}
-							*/
+								//On ajoute l'url au document courant
+								docInfos.setTitle(urlTmp);
+							}
+							
 							fl.close();
 							in.close();
 							br.close();
-						
+							
 						}
 						catch(Exception e){
 							//System.out.println(e.toString());
