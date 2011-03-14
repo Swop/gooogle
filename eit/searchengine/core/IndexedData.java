@@ -61,10 +61,15 @@ public class IndexedData implements Serializable {
 				List<Result> results = new ArrayList<Result>();
 
 				List<Entry<Integer, Float>> scores = IndexedData.calculScore(me, keywords);
+
+				float scoreMax = scores.get(0).getValue();
+				float seuil = scoreMax*6/10;
 				
 				for (final Entry<Integer, Float> entry : scores) {
 					int docId = entry.getKey();
 					float score = entry.getValue();
+					if(score < seuil)
+						break;
 					
 					InfosDocument infosDoc = me.documents.get(docId);
 					
@@ -114,6 +119,8 @@ public class IndexedData implements Serializable {
 				data.calculPoid();
 
 				data.clearUnusedData();
+
+				MainWindow.getInstance().getRobotPanel().log("----- Done! -----");
 
 				Controller.getInstance().getModel().finishedIndexing(data);
 				}
@@ -224,14 +231,22 @@ public class IndexedData implements Serializable {
 
 	public void calculPoid() {
 		int nbDocs = documents.size();
+		int nbWords = words.size();
 		float poids;
+		int cpt = 1;
 		for (String word : words.keySet()) {
+			float pourc = (float)cpt/(float)nbWords;
+			if(cpt % 200 == 0)
+				MainWindow.getInstance().getRobotPanel().log("Compute word weight ...("+Math.floor(pourc*10000)/100+" %)");
 			InfosWord infos = words.get(word);
 			for (int docId : documents.keySet()) {
 				poids = (float)(infos.getOccurence(docId) * Math.log(nbDocs / infos.getNbDocsOccurences()));
-				infos.setPoids(docId, poids);
+				if(poids != 0)
+					infos.setPoids(docId, poids);
 			}
+			cpt++;
 		}
+		MainWindow.getInstance().getRobotPanel().log("Compute word weight ...(100.00 %)");
 	}
 
 	public static List<Entry<Integer, Float>> calculScore(IndexedData data, List<String> requestWords) {
@@ -263,6 +278,26 @@ public class IndexedData implements Serializable {
 
 		Collections.reverse(entries);
 
+		/*float score = entries.get(0).getValue();
+		float seuil = score*6/10;
+		int index = -1;
+
+		for(Entry<Integer, Float> e : entries) {
+			index++;
+			if(e.getValue() > seuil)
+				continue;
+			break;
+		}
+
+		while(true) {
+			try {
+				entries.remove(index);
+				index++;
+			} catch(IndexOutOfBoundsException e) {
+				break;
+			}
+		}*/
+		
 		return entries;
 	}
 

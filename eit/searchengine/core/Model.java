@@ -50,8 +50,8 @@ public class Model {
 
 	public void finishedIndexing(IndexedData data) {
 		this.data = data;
-		saveIndexedData(new File(outputFilePath));
 		MainWindow.getInstance().getRobotPanel().setLaunchButtonEnable(true);
+		saveIndexedData(new File(outputFilePath));
 	}
 
 	public void loadIndexedData(File pathToBinaryFile) throws IOException, DeserializationException {
@@ -85,6 +85,7 @@ public class Model {
 				}
 			}
 		} catch (IOException ex) {
+			ex.printStackTrace();
 		}
 	}
 
