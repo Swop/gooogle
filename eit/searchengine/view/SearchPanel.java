@@ -104,6 +104,9 @@ public class SearchPanel extends Container implements ActionListener, ListSelect
 			JFileChooser fc = new JFileChooser(wd);
 			fc.setMultiSelectionEnabled(false);
 
+			this.setEnabled(false);
+			_chooseIndexedDataFileLabel.setText("Loading file...");
+
 			int returnVal = fc.showOpenDialog(MainWindow.getInstance());
 
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -112,18 +115,21 @@ public class SearchPanel extends Container implements ActionListener, ListSelect
 					_chooseIndexedDataFileLabel.setText(fc.getSelectedFile().getName());
 					ResultsListModel model = (ResultsListModel) _resultsList.getModel();
 					model.emptyList();
+					this.setEnabled(true);
 				} catch (IOException ex) {
 					JOptionPane.showMessageDialog(MainWindow.getInstance(),
 					ex.getMessage(),
 					"Warning",
 					JOptionPane.WARNING_MESSAGE);
 					_chooseIndexedDataFileLabel.setText("");
+					this.setEnabled(true);
 				} catch (DeserializationException ex) {
 					JOptionPane.showMessageDialog(MainWindow.getInstance(),
 					ex.getMessage(),
 					"Warning",
 					JOptionPane.WARNING_MESSAGE);
 					_chooseIndexedDataFileLabel.setText("");
+					this.setEnabled(true);
 				}
 			}
 		}
@@ -191,7 +197,11 @@ public class SearchPanel extends Container implements ActionListener, ListSelect
 	private void makeSearch() {
 		clearDocumentViewer();
 
-		
+		if(_searchField.getText().length() == 0) {
+			ResultsListModel model = (ResultsListModel) _resultsList.getModel();
+			model.emptyList();
+			return;
+		}
 		List<Result> lst;
 		this._searchSpinner.setText("Searching...");
 		try {

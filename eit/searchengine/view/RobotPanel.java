@@ -131,9 +131,8 @@ public class RobotPanel extends Container implements ActionListener {
 	}
 
 	public void setLaunchButtonEnable(boolean state) {
-		if(!state)
-			_launchRobotButton.setEnabled(false);
-		else
-			_launchRobotButton.setEnabled(true);
+		_launchRobotButton.setEnabled(state);
+		_chooseCorpusFolderButton.setEnabled(state);
+		_chooseOutputFileButton.setEnabled(state);
 	}
 }
