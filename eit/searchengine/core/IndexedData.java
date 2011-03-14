@@ -197,7 +197,7 @@ public class IndexedData implements Serializable {
 								docInfos.setUrl(urlTmp);
 								this.url.put(urlTmp, docInfos.getId());
 							}
-							boolean aSearch = true;
+							/*boolean aSearch = true;
 							boolean hrefSearch = false;
 							boolean urlConcat = false;
 							boolean toConcat = false;
@@ -281,12 +281,12 @@ public class IndexedData implements Serializable {
 								
 								System.out.println(m.group(0));
 								*/
-							}
-							
+							/*}
+							*/
 							fl.close();
 							in.close();
 							br.close();
-							
+						
 						}
 						catch(Exception e){
 							//System.out.println(e.toString());
