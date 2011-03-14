@@ -21,6 +21,7 @@ public class InfosDocument  implements Serializable {
 	private int id;
 	private String url;
 	private String title;
+	private String urlLocal;
 	
 	private ArrayList<String> liensVersAutresDocs;
 	private ArrayList<String> liensPointantVersCeDoc;
@@ -33,6 +34,14 @@ public class InfosDocument  implements Serializable {
 		return title;
 	}
 	
+	public void setUrlLocal(String urlLocal) {
+		this.urlLocal = urlLocal;
+	}
+	
+	public String getUrlLocal() {
+		return urlLocal;
+	}
+	
 	public void addLiensVersAutresDocs(String lien) {
 		liensVersAutresDocs.add(lien);
 	}
@@ -42,10 +51,11 @@ public class InfosDocument  implements Serializable {
 		return _cptInstances;
 	}
 
-	public InfosDocument() {
+	public InfosDocument(String urlLocal) {
 		this.liensVersAutresDocs = new ArrayList<String>();
 		this.liensPointantVersCeDoc = new ArrayList<String>();
 		this.id =  getNewId();
+		this.urlLocal = urlLocal;
 	}
 
 	//public void addLienVersAutreDoc(String url);
