@@ -141,7 +141,9 @@ public class IndexedData implements Serializable {
 					
 
 					MainWindow.getInstance().getRobotPanel().log("Analyse "+f.getName());
-					InfosDocument docInfos = new InfosDocument();
+					String urlLocal = f.getAbsolutePath().replaceFirst("lemmes_seulement", "texte");
+					urlLocal = html.replaceFirst("-lemmas.txt", ".txt");
+					InfosDocument docInfos = new InfosDocument(urlLocal);
 					try {
 						
 						FileInputStream fl = new FileInputStream(f);
@@ -163,7 +165,6 @@ public class IndexedData implements Serializable {
 								if (this.words.containsKey(word)) {
 									wdInfos = words.get(word);
 								} else { //Soit il n'y ait pas et on l'ajoute
-
 									wdInfos = new InfosWord(word);
 									this.addNewWord(wdInfos);
 								}
