@@ -17,6 +17,14 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.htmlparser.NodeFilter;
+import org.htmlparser.Parser;
+import org.htmlparser.filters.LinkRegexFilter;
+import org.htmlparser.filters.LinkStringFilter;
+import org.htmlparser.tags.LinkTag;
+import org.htmlparser.util.NodeList;
+import org.htmlparser.util.ParserException;
+
 public class IndexedData implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -131,14 +139,20 @@ public class IndexedData implements Serializable {
 				if (f.getName().endsWith("lemmas.txt")) {
 					
 					
+					
+
 					MainWindow.getInstance().getRobotPanel().log("Analyse "+f.getName());
 					InfosDocument docInfos = new InfosDocument();
 					try {
+						
+						
+						
 						BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
 						String line;
 
 						//Lecture ligne par ligne
 						while ((line = br.readLine()) != null) {
+							
 							StringTokenizer st = new StringTokenizer(line);
 
 							//Decoupage de la ligne en tokens
@@ -179,11 +193,21 @@ public class IndexedData implements Serializable {
 								docInfos.setUrl(urlTmp);
 								this.url.put(urlTmp, docInfos.getId());
 							}
+							while((line = br.readLine()) !=  null){
+								Pattern p = Pattern.compile("(<a (href)*)"); 
+								Pattern p2 = Pattern.compile("href=\"(.*)\""); 
+								
+								Matcher m = p.matcher(line); 
+							//	Matcher m2 = p2.matcher(m.group(0));
+								
+								System.out.println(m.group(0));
+							}
+							
 							br.close();
 							
 						}
 						catch(Exception e){
-							System.out.println(e.toString());
+							//System.out.println(e.toString());
 						}	
 						
 						
