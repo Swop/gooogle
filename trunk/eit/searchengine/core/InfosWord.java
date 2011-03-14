@@ -5,26 +5,27 @@
 
 package eit.searchengine.core;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
  *
  * @author swop
  */
-public class InfosWord {
+public class InfosWord implements Serializable {
 	private int nbDocsOccurences;
 	private String word;
 	private HashMap<Integer, Integer> occurences;
-	private HashMap<Integer, Double> poids;
+	private HashMap<Integer, Float> poids;
 
 	public InfosWord(String word) {
 		this.word = word;
 		occurences = new HashMap<Integer, Integer>();
-		poids = new HashMap<Integer, Double>();
+		poids = new HashMap<Integer, Float>();
 		nbDocsOccurences = 0;
 	}
 
-	public void setPoids(int DocId, double poids) {
+	public void setPoids(int DocId, float poids) {
 		this.poids.put(DocId, poids);
 	}
 
@@ -62,6 +63,10 @@ public class InfosWord {
 
 	public String getWord() {
 		return word;
+	}
+
+	public void clearOccurenceData() {
+		occurences = null;
 	}
 
 }

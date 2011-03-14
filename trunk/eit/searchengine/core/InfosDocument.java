@@ -6,6 +6,7 @@
 package eit.searchengine.core;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
  * @author swop
  */
 
-public class InfosDocument {
+public class InfosDocument  implements Serializable {
 	private static int _cptInstances = 0;
 	private int id;
 	private String url;

@@ -52,11 +52,11 @@ public class IndexedData implements Serializable {
 			public void run() {
 				List<Result> results = new ArrayList<Result>();
 
-				List<Entry<Integer, Double>> scores = IndexedData.calculScore(me, keywords);
+				List<Entry<Integer, Float>> scores = IndexedData.calculScore(me, keywords);
 				
-				for (final Entry<Integer, Double> entry : scores) {
+				for (final Entry<Integer, Float> entry : scores) {
 					int docId = entry.getKey();
-					double score = entry.getValue();
+					float score = entry.getValue();
 					
 					InfosDocument infosDoc = me.documents.get(docId);
 					
@@ -103,7 +103,9 @@ public class IndexedData implements Serializable {
 
 				IndexedData data = new IndexedData();
 				data.initData(pathToCorpusFile);
-				//TODO indexationnnnnnnnnnnn
+				data.calculPoid();
+
+				data.clearUnusedData();
 
 				Controller.getInstance().getModel().finishedIndexing(data);
 				}
@@ -198,24 +200,25 @@ public class IndexedData implements Serializable {
 
 	public void calculPoid() {
 		int nbDocs = documents.size();
+		float poids;
 		for (String word : words.keySet()) {
 			InfosWord infos = words.get(word);
 			for (int docId : documents.keySet()) {
-				double poids = infos.getOccurence(docId) * Math.log(nbDocs / infos.getNbDocsOccurences());
+				poids = (float)(infos.getOccurence(docId) * Math.log(nbDocs / infos.getNbDocsOccurences()));
 				infos.setPoids(docId, poids);
 			}
 		}
 	}
 
-	public static List<Entry<Integer, Double>> calculScore(IndexedData data, List<String> requestWords) {
-		HashMap<Integer, Double> scores = new HashMap<Integer, Double>();
+	public static List<Entry<Integer, Float>> calculScore(IndexedData data, List<String> requestWords) {
+		HashMap<Integer, Float> scores = new HashMap<Integer, Float>();
 		//sim(dj, dk) = somme( poid(i,j) * poid(i,k) ) / ( racine( somme(w(i,j)² ) ) * racine( somme(w(i,k)²) )
 
 		for (int docId : data.documents.keySet()) {
 			InfosDocument infosDoc = data.documents.get(docId);
 			HashMap<String, InfosWord> words = data.words;
 
-			double somme = 0;
+			float somme = 0;
 			for (String word : requestWords) {
 				InfosWord infos = words.get(word);
 				if (infos != null) {
@@ -225,11 +228,11 @@ public class IndexedData implements Serializable {
 			scores.put(docId, somme);
 		}
 
-		final List<Entry<Integer, Double>> entries = new ArrayList<Entry<Integer, Double>>(scores.entrySet());
+		final List<Entry<Integer, Float>> entries = new ArrayList<Entry<Integer, Float>>(scores.entrySet());
 
-		Collections.sort(entries, new Comparator<Entry<Integer, Double>>() {
+		Collections.sort(entries, new Comparator<Entry<Integer, Float>>() {
 
-			public int compare(final Entry<Integer, Double> e1, final Entry<Integer, Double> e2) {
+			public int compare(final Entry<Integer, Float> e1, final Entry<Integer, Float> e2) {
 				return e1.getValue().compareTo(e2.getValue());
 			}
 		});
@@ -237,5 +240,12 @@ public class IndexedData implements Serializable {
 		Collections.reverse(entries);
 
 		return entries;
+	}
+
+	private void clearUnusedData() {
+		for (String word : words.keySet()) {
+			InfosWord infosWord = words.get(word);
+			infosWord.clearOccurenceData();
+		}
 	}
 }

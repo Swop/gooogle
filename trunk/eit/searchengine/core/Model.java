@@ -59,15 +59,9 @@ public class Model {
 		try {
 			FileInputStream fis = new FileInputStream(pathToBinaryFile);
 			ObjectInputStream ois = new ObjectInputStream(fis);
-			try {
 				data = (IndexedData) ois.readObject();
-			} finally {
-				try {
-					ois.close();
-				} finally {
-					fis.close();
-				}
-			}
+				ois.close();
+				fis.close();
 		/*} catch (IOException ioe) {
 			throw new IOException("Can't read selected file!");
 		*/} catch (Exception ex) {
