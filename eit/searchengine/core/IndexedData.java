@@ -144,9 +144,9 @@ public class IndexedData implements Serializable {
 					InfosDocument docInfos = new InfosDocument();
 					try {
 						
-						
-						
-						BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
+						FileInputStream fl = new FileInputStream(f);
+						InputStreamReader in = new InputStreamReader(fl);						
+						BufferedReader br = new BufferedReader(in);
 						String line;
 
 						//Lecture ligne par ligne
@@ -170,6 +170,9 @@ public class IndexedData implements Serializable {
 								wdInfos.addOccurence(1, docInfos.getId());
 							}
 						}
+						
+						fl.close();
+						in.close();
 						br.close();
 						this.addDocument(docInfos);
 						
@@ -180,7 +183,9 @@ public class IndexedData implements Serializable {
 						File htmlFile = new File (html);
 						
 						try{
-							br = new BufferedReader(new InputStreamReader(new FileInputStream(htmlFile)));
+							 fl = new FileInputStream(htmlFile);
+							 in = new InputStreamReader(fl);						
+							 br = new BufferedReader(in);
 							line = "";
 							String urlTmp= "";
 							if((line = br.readLine()) != "") {						
@@ -270,6 +275,8 @@ public class IndexedData implements Serializable {
 								*/
 							}
 							
+							fl.close();
+							in.close();
 							br.close();
 							
 						}
@@ -279,7 +286,7 @@ public class IndexedData implements Serializable {
 						
 						
 						
-
+						
 					} catch (Exception e) {
 						System.out.println(e.toString());
 					}
