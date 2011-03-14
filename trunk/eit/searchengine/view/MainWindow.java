@@ -45,6 +45,7 @@ public class MainWindow extends JFrame {
 
 		this.pack();
 		this.setSize(1024, 868);
+		this.setLocation(0,0);
 
 		this.setVisible(true);
 	}
