@@ -11,6 +11,8 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import org.annolab.tt4j.TreeTaggerException;
+
 public class SearchPanel extends Container implements ActionListener, ListSelectionListener, KeyListener, ItemListener {
 
 	private boolean instantSearchActivated = true;
@@ -198,6 +200,18 @@ public class SearchPanel extends Container implements ActionListener, ListSelect
 			this._searchSpinner.setText("");
 			JOptionPane.showMessageDialog(MainWindow.getInstance(),
 					ex.getMessage(),
+					"Warning",
+					JOptionPane.WARNING_MESSAGE);
+		} catch (IOException e) {
+			this._searchSpinner.setText("");
+			JOptionPane.showMessageDialog(MainWindow.getInstance(),
+					e.getMessage(),
+					"Warning",
+					JOptionPane.WARNING_MESSAGE);
+		} catch (TreeTaggerException e) {
+			this._searchSpinner.setText("");
+			JOptionPane.showMessageDialog(MainWindow.getInstance(),
+					e.getMessage(),
 					"Warning",
 					JOptionPane.WARNING_MESSAGE);
 		}

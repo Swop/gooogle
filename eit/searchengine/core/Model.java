@@ -13,26 +13,49 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.annolab.tt4j.TokenAdapter;
+import org.annolab.tt4j.TokenHandler;
+import org.annolab.tt4j.TreeTaggerException;
+import org.annolab.tt4j.TreeTaggerWrapper;
+
 public class Model {
 
 	private IndexedData data = null;
 	private String outputFilePath;
-
+	private TreeTaggerWrapper<String> tt = new TreeTaggerWrapper<String>();
+	
 	public boolean closeModel() {
 		return true;
 	}
 
-	public void search(String text) throws IndexedDataNotLoaded {
+	public void search(String text) throws IndexedDataNotLoaded, IOException, TreeTaggerException {
 		if (data == null) {
 			throw new IndexedDataNotLoaded();
 		}
 		List<String> keywords = new ArrayList<String>();
 
-		StringTokenizer st = new StringTokenizer(text);
+	
+		System.setProperty("treetagger.home", "./TreeTagger");
+		// TODO : faire un test sur l'os
+//		tt.setModel("/french-par-linux-3.2-utf8.bin");
+		tt.setModel("/tag-french.bat");
+		tt.setHandler(new TokenHandler<String>() {
+		    public void token(String token, String pos, String lemma) {
+		    	System.out.println(token+"\t"+pos+"\t"+lemma);
+			}
+		});
+/*		tt.setAdapter(new TokenAdapter<String>() {
+			public String getText(String e) {
+				return e;
+			}
+		});
+*/		StringTokenizer st = new StringTokenizer(text);
 		while (st.hasMoreTokens()) {
 			keywords.add(st.nextToken());
 		}
-
+		tt.process(keywords);
+		
+		// T0D0 : lecture de tt a passer a search
 		data.search(keywords);
 	}
 
